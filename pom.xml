@@ -178,6 +178,14 @@
             <version>1.4.5.RELEASE</version>
         </dependency>
 
+        <!--Jsoup使用标签白名单的机制用来进行防止XSS攻击, 假设白名单中只允许p标签存在, 此时在一段HTML代码中, 只能存在p标签 ,
+        其他标签将会被清除只保留被标签所包裹的内容，当然，Jsoup不仅仅可以用来过滤，还可以用来爬虫，这里先不做说明，后期会单写一篇文章进行讲解。-->
+        <dependency>
+            <groupId>org.jsoup</groupId>
+            <artifactId>jsoup</artifactId>
+            <version>1.10.2</version>
+        </dependency>
+
     </dependencies>
 
 
