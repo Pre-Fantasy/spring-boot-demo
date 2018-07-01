@@ -9,6 +9,8 @@ import com.example.demo.core.ret.RetCode;
 import com.example.demo.core.ret.RetResult;
 import com.example.demo.core.ret.ServiceException;
 
+import org.apache.shiro.authz.UnauthenticatedException;
+import org.apache.shiro.authz.UnauthorizedException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Configuration;
@@ -103,6 +105,7 @@ public class WebConfigure extends WebMvcConfigurationSupport {
         exceptionResolvers.add(getHandlerExceptionResolvers());
     }
 
+
    /**
      *  @author Pre_fantasy
      *  @create 2018/5/29 22:43
@@ -141,11 +144,20 @@ public class WebConfigure extends WebMvcConfigurationSupport {
         RetResult result = new RetResult();
         if (e instanceof ServiceException) {
             result.setCode(RetCode.FALT).setMsg(e.getMessage()).setData(null);
+            LOGGER.info(e.getMessage());
             return result;
         }
 
         if (e instanceof NoHandlerFoundException) {
             result.setCode(RetCode.NOT_FOUND).setMsg("接口 [ " + request.getRequestURI() + " ] 不存在");
+            return result;
+        }
+        if (e instanceof UnauthorizedException) {
+            result.setCode(RetCode.UNAUTHZ).setMsg("用户没有访问权限！").setData(null);
+            return result;
+        }
+        if (e instanceof  UnauthenticatedException) {
+            result.setCode(RetCode.UNAUTHEN).setMsg("用户未登陆！").setData(null);
             return result;
         }
 

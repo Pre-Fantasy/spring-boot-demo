@@ -6,7 +6,7 @@ import com.example.demo.core.universal.Service;
 /**
 * @Description: SystemLogService接口
 * @author Pre_fantasy
-* @date 2018/06/29 17:02
+* @date 2018/06/30 16:28
 */
 public interface SystemLogService extends Service<SystemLog> {
 
