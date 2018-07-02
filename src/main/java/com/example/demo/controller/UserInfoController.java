@@ -48,7 +48,7 @@ public class UserInfoController {
      *  @return RerResult</UserInfo>
      *  @desc   测试用户不存在异常
      */
-    @PostMapping("/testException")
+    @PostMapping("/selectById")
     public RetResult<UserInfo> testException (@RequestParam String id) {
 
         List list = null;
