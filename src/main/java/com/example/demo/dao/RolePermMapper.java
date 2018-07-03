@@ -11,7 +11,6 @@ import java.util.List;
  *  @create 2018/6/30 17:31
  *  @desc   角色权限Mapper
  */
-@Component
 public interface RolePermMapper extends Mapper<RolePerm> {
 
     /**

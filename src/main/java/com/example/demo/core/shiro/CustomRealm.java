@@ -6,6 +6,7 @@ import com.example.demo.service.UserInfoService;
 import com.example.demo.service.UserRoleService;
 import org.apache.shiro.authc.*;
 import org.apache.shiro.authc.credential.HashedCredentialsMatcher;
+import org.apache.shiro.authz.AuthorizationException;
 import org.apache.shiro.authz.AuthorizationInfo;
 import org.apache.shiro.authz.SimpleAuthorizationInfo;
 import org.apache.shiro.realm.AuthorizingRealm;
@@ -54,6 +55,7 @@ public class CustomRealm extends AuthorizingRealm {
         HashedCredentialsMatcher hashMatcher = new HashedCredentialsMatcher();
         hashMatcher.setHashAlgorithmName("md5");
         hashMatcher.setStoredCredentialsHexEncoded(true);
+        /*加密次数*/
         hashMatcher.setHashIterations(1024);
         this.setCredentialsMatcher(hashMatcher);
     }
@@ -69,7 +71,7 @@ public class CustomRealm extends AuthorizingRealm {
     protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principalCollection) {
 
         if (principalCollection == null) {
-            throw new AuthenticationException("PrincipalCollection method argument cannot be null.");
+            throw new AuthorizationException("PrincipalCollection method argument cannot be null.");
         }
 
         UserInfo user = (UserInfo) getAvailablePrincipal(principalCollection);

@@ -1,12 +1,17 @@
 package com.example.demo.core.configurer;
 
 import com.example.demo.core.shiro.CustomRealm;
+import com.example.demo.model.SysPermissionInit;
+import com.example.demo.service.SysPermissionInitService;
 import org.apache.shiro.realm.Realm;
 import org.apache.shiro.spring.web.config.DefaultShiroFilterChainDefinition;
 import org.apache.shiro.spring.web.config.ShiroFilterChainDefinition;
 import org.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreator;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+
+import javax.annotation.Resource;
+import java.util.List;
 
 
 /**
@@ -16,6 +21,9 @@ import org.springframework.context.annotation.Configuration;
  **/
 @Configuration
 public class ShiroConfigurer {
+
+    @Resource
+    private SysPermissionInitService sysPermissionInitService;
 
     /**
      *  @author Pre_fantasy
@@ -47,11 +55,17 @@ public class ShiroConfigurer {
     @Bean
     public ShiroFilterChainDefinition shiroFilterChainDefinition() {
         DefaultShiroFilterChainDefinition chainDefinition = new DefaultShiroFilterChainDefinition();
-        chainDefinition.addPathDefinition("/userInfo/selectById", "authc, roles[admin]");
+        /*chainDefinition.addPathDefinition("/userInfo/selectById", "authc, roles[cw]");
         chainDefinition.addPathDefinition("/logout", "anon");
         chainDefinition.addPathDefinition("/userInfo/selectAll", "anon");
         chainDefinition.addPathDefinition("/userInfo/login", "anon");
-        chainDefinition.addPathDefinition("/**", "authc");
+        chainDefinition.addPathDefinition("/**", "authc");*/
+
+        List<SysPermissionInit> list = sysPermissionInitService.selectAllOrderBySort();
+        for (int i = 0, length = list.size(); i < length; i++) {
+            SysPermissionInit sysPermissionInit = list.get(i);
+            chainDefinition.addPathDefinition(sysPermissionInit.getUrl(), sysPermissionInit.getPermissionInit());
+        }
         return chainDefinition;
     }
 

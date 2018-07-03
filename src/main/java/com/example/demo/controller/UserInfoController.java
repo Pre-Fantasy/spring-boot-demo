@@ -23,7 +23,7 @@ import java.util.List;
 /**
  * @author Pre_fantasy
  * @Description: UserInfoController类
- * @date 2018/06/30 17:04
+ * @date 2018/07/02 20:47
  */
 @RestController
 @RequestMapping("/userInfo")
@@ -61,7 +61,7 @@ public class UserInfoController {
      * @param page 页码
      * @param size 每页条数
      * @Description: 分页查询
-     * @Reutrn RetResult<PageInfo<serInfo>>
+     * @Reutrn RetResult<PageInfo   <   UserInfo>>
      */
     @PostMapping("/list")
     public RetResult<PageInfo<UserInfo>> list(@RequestParam(defaultValue = "0") Integer page,
@@ -72,27 +72,18 @@ public class UserInfoController {
         return RetResponse.makeOKRsp(pageInfo);
     }
 
-
-    /**
-     *  @author Pre_fantasy
-     *  @create 2018/7/1 14:10
-     *  @param  {String userName<用户名>, String password<用户密码>}
-     *  @return RetResult<UserInfo>
-     *  @desc   用户登录方法
-     */
-    @PostMapping(value = "/login")
-    public RetResult<UserInfo> login(String userName, String passwrod) {
-
+    @PostMapping("/login")
+    public RetResult<UserInfo> login(String userName, String password) {
         Subject currentUser = SecurityUtils.getSubject();
+        //登录
         try {
-            currentUser.login(new UsernamePasswordToken(userName, passwrod));
-        } catch (IncorrectCredentialsException e) {
+            currentUser.login(new UsernamePasswordToken(userName, password));
+        }catch (IncorrectCredentialsException i){
             throw new ServiceException("密码输入错误");
         }
-        /*从session中取出用户信息*/
-        UserInfo userInfo = (UserInfo) currentUser.getPrincipal();
-        return RetResponse.makeOKRsp(userInfo);
+        //从session取出用户信息
+        UserInfo user = (UserInfo) currentUser.getPrincipal();
+        return RetResponse.makeOKRsp(user);
     }
-
 
 }
