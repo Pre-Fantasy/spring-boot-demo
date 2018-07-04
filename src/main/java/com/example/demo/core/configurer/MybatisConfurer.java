@@ -1,7 +1,10 @@
 package com.example.demo.core.configurer;
 
+import com.example.demo.core.constant.ProjectConstant;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.mybatis.spring.SqlSessionFactoryBean;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
@@ -12,7 +15,6 @@ import tk.mybatis.spring.mapper.MapperScannerConfigurer;
 import javax.sql.DataSource;
 
 @Configuration
-@MapperScan("com.example.demo.dao")
 public class MybatisConfurer {
 
     @Bean

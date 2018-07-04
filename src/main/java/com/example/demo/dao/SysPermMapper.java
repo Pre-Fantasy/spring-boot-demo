@@ -1,8 +1,8 @@
 package com.example.demo.dao;
 
 import com.example.demo.core.universal.Mapper;
-import com.example.demo.model.SystemLog;
+import com.example.demo.model.SysPerm;
 import org.springframework.stereotype.Component;
 
-public interface SystemLogMapper extends Mapper<SystemLog> {
+public interface SysPermMapper extends Mapper<SysPerm> {
 }
