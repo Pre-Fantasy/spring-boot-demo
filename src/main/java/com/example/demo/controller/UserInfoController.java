@@ -1,5 +1,6 @@
 package com.example.demo.controller;
 
+import com.example.demo.core.aop.AnnotationLog;
 import com.example.demo.core.ret.RetResult;
 import com.example.demo.core.ret.RetResponse;
 import com.example.demo.core.ret.ServiceException;
@@ -52,10 +53,20 @@ public class UserInfoController {
         return RetResponse.makeOKRsp(state);
     }
 
+
     @PostMapping("/selectById")
     public RetResult<UserInfo> selectById(@RequestParam String id) throws Exception {
         UserInfo userInfo = userInfoService.selectById(id);
         return RetResponse.makeOKRsp(userInfo);
+    }
+
+    @PostMapping("selectAll")
+    @AnnotationLog(remark = "查询")
+    public RetResult<PageInfo> selectAll(@RequestParam(defaultValue = "0") Integer page,
+                                         @RequestParam(defaultValue = "0") Integer size) throws Exception {
+        List<UserInfo> list = userInfoService.selectAll();
+        PageInfo<UserInfo> pageInfo = new PageInfo<UserInfo>(list);
+        return RetResponse.makeOKRsp(pageInfo);
     }
 
     /**

@@ -5,6 +5,19 @@ import javax.persistence.*;
 
 @Table(name = "system_log")
 public class SystemLog {
+
+    /**
+     * 日志类型为正常
+     */
+    @Transient
+    public static final String LOGINFO = "0";
+
+    /**
+     * 日志类型为异常
+     */
+    @Transient
+    public static final String LOGERROR = "1";
+
     @Id
     private String id;
 
