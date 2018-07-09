@@ -31,4 +31,7 @@ public class ProjectConstant {
     /*Mapper插件基础接口的完全限定名*/
     public static final String MAPPER_INTERFACE_REFERENCE = BASE_PACKAGE + ".core.universal.Mapper";
 
+    /*文件保存路径*/
+    public static final String SAVEFILEPATH = "F://img";
+
 }
