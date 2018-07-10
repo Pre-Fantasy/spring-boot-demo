@@ -206,6 +206,12 @@
             <version>1.3.1</version>
         </dependency>
 
+        <!--发送普通邮件，发送附件，发送模板邮件等依赖-->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-mail</artifactId>
+        </dependency>
+
     </dependencies>
 
 
