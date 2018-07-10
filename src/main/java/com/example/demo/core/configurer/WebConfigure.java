@@ -5,6 +5,7 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.serializer.SerializerFeature;
 import com.alibaba.fastjson.support.config.FastJsonConfig;
 import com.alibaba.fastjson.support.spring.FastJsonHttpMessageConverter4;
+import com.example.demo.core.interceptor.Interceptor1;
 import com.example.demo.core.ret.RetCode;
 import com.example.demo.core.ret.RetResult;
 import com.example.demo.core.ret.ServiceException;
@@ -17,7 +18,9 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.web.method.HandlerMethod;
+import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.NoHandlerFoundException;
+import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurationSupport;
 import org.springframework.web.servlet.HandlerExceptionResolver;
@@ -37,6 +40,8 @@ import java.util.List;
 public class WebConfigure extends WebMvcConfigurationSupport {
 
     private final static Logger LOGGER = LoggerFactory.getLogger(WebConfigure.class);
+    /*可以根据自己的需求进行修改 */
+    private static final String IZATION = "CHUCHEN";
 
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
@@ -68,6 +73,37 @@ public class WebConfigure extends WebMvcConfigurationSupport {
         converters.add(converter);
 
     }
+
+    /**
+     *  @author Pre_fantasy
+     *  @create 2018/7/10 10:50
+     *  @param  {registry<InterceptorRegistry>}
+     *  @return 
+     *  @desc   添加拦截器，请求头拦截
+     */
+    @Override
+    public void addInterceptors(InterceptorRegistry registry) {
+        registry.addInterceptor(
+                new Interceptor1() {
+                    /*这里的 拦截器可以使用自己创建的拦截器，需要继承HandlerInterceptorAdapter*/
+                    @Override
+                    public boolean preHandle(HttpServletRequest request,
+                                             HttpServletResponse response, Object handler) throws Exception {
+                        String ization = request.getHeader("ization");
+                        if (IZATION.equals(ization)) {
+                            return true;
+                        } else {
+                            RetResult<Object> result = new RetResult<>();
+                            result.setCode(RetCode.UNAUTHORIZED).setMsg("签名认证失败");
+                            responseResult(response, result);
+                            return false;
+                        }
+                    }
+                }
+        ).addPathPatterns("/userInfo/selectAll");
+    }
+
+
     private List<MediaType> getSupportedMediaTypes() {
         List<MediaType> supportedMediaTypes = new ArrayList<MediaType>();
         supportedMediaTypes.add(MediaType.APPLICATION_JSON);
@@ -155,7 +191,6 @@ public class WebConfigure extends WebMvcConfigurationSupport {
 
                 responseResult(response, result);
                 return new ModelAndView();
-
             }
         };
         return handlerExceptionResolver;

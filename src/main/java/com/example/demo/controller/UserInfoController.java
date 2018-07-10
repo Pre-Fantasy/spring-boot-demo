@@ -69,6 +69,15 @@ public class UserInfoController {
         return RetResponse.makeOKRsp(pageInfo);
     }
 
+    @PostMapping("selectAlla")
+    @AnnotationLog(remark = "查询")
+    public RetResult<PageInfo> selectAlla(@RequestParam(defaultValue = "0") Integer page,
+                                         @RequestParam(defaultValue = "0") Integer size) throws Exception {
+        List<UserInfo> list = userInfoService.selectAll();
+        PageInfo<UserInfo> pageInfo = new PageInfo<UserInfo>(list);
+        return RetResponse.makeOKRsp(pageInfo);
+    }
+
     /**
      * @param page 页码
      * @param size 每页条数
